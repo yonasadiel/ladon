@@ -1,0 +1,12 @@
+<div class="input">
+  <? if (typeof data.field.name !== 'undefined') { ?> <label> <?= data.field.name ?> </label> <? } ?>
+   <input
+    id="<?= data.field.id ?>"
+    name="<?= data.field.id ?>"
+    type="email"
+    onchange='validate(<?= JSON.stringify(data.field) ?>, this)'
+    <? if (typeof data.field.placeholder !== 'undefined') { ?> placeholder="<?= data.field.placeholder ?>" <? } ?>
+  >
+  <? if (typeof data.field.helper !== 'undefined') { ?> <small> <?= data.field.helper ?> </small> <? } ?>
+  <small class="error" id="<?= data.field.id ?>-error"> <br/> </small>
+</div>

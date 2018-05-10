@@ -1,0 +1,101 @@
+<script>
+  $(document).ready(function() {
+    <? for (var sectionIdx = 0; sectionIdx < SCHEMA.sections.length; sectionIdx++) { ?>
+      <? for (var fieldIdx = 0; fieldIdx < SCHEMA.sections[sectionIdx].fields.length; fieldIdx++) { ?>
+        <? var field = SCHEMA.sections[sectionIdx].fields[fieldIdx] ?>
+        <? if (field.type === 'date') { ?>
+          $("#<?= field.id ?>").pickadate({
+            format: 'yyyy/mm/dd',
+            selectYears: true,
+            selectMonths: true,
+            <? if (typeof field.minimum !== 'undefined') { ?> min: [<?!= field.minimum ?>], <? } ?>
+            <? if (typeof field.maximum !== 'undefined') { ?> max: [<?!= field.maximum ?>], <? } ?>
+          })
+        <? } ?>
+      <? } ?>
+    <? } ?>
+    $("#loading").css("display", "none")
+  })
+  
+  var currentSectionIdx = 0
+  
+  function nextSection(idx) {
+    var current = $("#section-" + currentSectionIdx)
+    var next = $("#section-" + idx)
+    next.css("left", "100vw")
+    current.animate({ left: "-100vw", opacity: 0 }, 500, "swing", function() {
+      current.addClass("hidden")
+      next.removeClass("hidden")
+      next.animate({ left: "0", opacity: 1 }, 500, "swing")
+      currentSectionIdx = idx
+    })
+  }
+  
+  function prevSection(idx) {
+    var current = $("#section-" + currentSectionIdx)
+    var prev = $("#section-" + idx)
+    prev.css("left", "-100vw")
+    current.animate({ left: "100vw", opacity: 0 }, 500, "swing", function() {
+      current.addClass("hidden")
+      prev.removeClass("hidden")
+      prev.animate({ left: "0", opacity: 1 }, 500, "swing")
+      currentSectionIdx = idx
+    })
+  }
+    
+  function resetAllErrors() {
+    $.each($(".error"), function(index, item) {
+      $(item).html("")
+    })
+  }
+  
+  function processForm() {
+    resetAllErrors()
+    $("#loading").css("display", "inline")
+    var e = $("form").serializeArray()
+    var formData = { }
+    
+    for (var i = 0; i < e.length; i++)
+      if (typeof formData[e[i].name] === 'undefined')
+        formData[e[i].name] = e[i].value
+      else
+        formData[e[i].name] = [formData[e[i].name], e[i].value]
+        
+    google.script.run
+      .withSuccessHandler(successProcessForm)
+      .withFailureHandler(failProcessForm)
+      .processFormData(formData)
+  }
+  
+  function failProcessForm(err) {
+    var errors = JSON.parse(err.message)
+    $("#general-error").html("There are some errors. Please fix and submit again")
+    $("#loading").css("display", "none")
+    var minSection = parseInt(<?= SCHEMA.sections.length ?>)
+    for (var i = 0; i < errors.length; i++) {
+      <? for (var sectionIdx = 0; sectionIdx < SCHEMA.sections.length; sectionIdx++) { ?>
+        <? for (var fieldIdx = 0; fieldIdx < SCHEMA.sections[sectionIdx].fields.length; fieldIdx++) { ?>
+          <? var field = SCHEMA.sections[sectionIdx].fields[fieldIdx] ?>
+          if (errors[i].id === <?= field.id ?>) {
+            minSection = Math.min(minSection, <?= sectionIdx ?>)
+          }
+        <? } ?>
+      <? } ?>
+      $("#" + errors[i].id + "-error").html("<br/>" + errors[i].msg)
+    }
+    prevSection(minSection)
+  }
+  
+  function successProcessForm() {
+    $("#loading").css("display", "none")
+    nextSection("success")
+  }
+  
+  function validate(fieldJSON, element) {
+    var field = JSON.parse(fieldJSON)
+    google.script.run
+      .withSuccessHandler(function() { $("#" + field.id + "-error").html("<br/>") })
+      .withFailureHandler(function(e) { $("#" + field.id + "-error").html("<br/>" + e.message) })
+      .validateFieldValue(field, $(element).val())
+  }
+</script>

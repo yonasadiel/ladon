@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('viewStylesheet') ?>
+  </head>
+  <body>
+  <main>
+    <div class="container">
+      <h1 class="mb5 dib"> <?= APPS_NAME ?> </h1>
+      <p class="dib mx5">
+        <a onclick="goToPage('result')">
+          view all <i class="fas fa-undo"></i>
+        </a>
+      </p>
+      <div class="card">
+        <div class="card-title">
+          <h3> <span class="<?= fieldNameToId[PRIMARY_COLUMN[0]] || fieldNameToId[PRIMARY_COLUMN] ?>-content"> Loading ... </span> </h3>
+        </div>
+        <div class="card-content">
+          Response summary for <span class="<?= fieldNameToId[PRIMARY_COLUMN[0]] || fieldNameToId[PRIMARY_COLUMN] ?>-content">  </span>. Only admin can see private data.
+        </div>
+      </div>
+      <? for (var sectionIdx = 0; sectionIdx < SCHEMA.sections.length; sectionIdx++) {
+        var section = SCHEMA.sections[sectionIdx] ?>
+        <div class="card" id="section-<?= sectionIdx ?>">
+          <div class="card-title">
+            <h3> <?= section.sectionName ?> </h3>
+          </div>
+          <div class="card-content">
+            
+            <? for (var fieldIdx = 0; fieldIdx < section.fields.length; fieldIdx++) {
+              var field = section.fields[fieldIdx] 
+              
+              if (field.scope === 'public') { ?>
+                <p> <?= field.name ?>: <span class="<?= field.id ?>-content"> </span></p>
+              <? } else if (field.scope === 'private') { ?>
+                <p> <?= field.name ?>: hidden </p>
+              <? } ?>
+            <? } ?>
+            
+          </div>
+        </div>
+      <? } ?>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      &copy; 2018. Presented with <a href="https://github.com/yonasadiel/ladon">Ladon</a>.
+    </div>
+  </footer>
+  </body>
+  <?!= include('viewScript') ?>
+  <?!= include('viewDataScript') ?>
+  <script>
+    loadDataById(<?= data.idx ?>)
+  </script>
+</html>

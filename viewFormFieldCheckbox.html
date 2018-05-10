@@ -1,0 +1,15 @@
+<div class="input">
+  <? if (typeof data.field.name !== 'undefined') { ?> <label> <?= data.field.name ?> </label> <? } ?>
+  <? for (var optionIdx = 0; optionIdx < data.field.options.length; optionIdx++) { ?>
+    <label class="checkbox-item">
+      <input
+        type="checkbox"
+        name="<?= data.field.id ?>"
+        value="<?= data.field.options[optionIdx] ?>"
+        onchange='validate(<?= JSON.stringify(data.field) ?>, this)'
+      > <span class="checkbox-label"> <?= data.field.options[optionIdx] ?> </span>
+    </label>
+  <? } ?>
+  <? if (typeof data.field.helper !== 'undefined') { ?> <small> <?= data.field.helper ?> </small> <? } ?>
+  <small class="error" id="<?= data.field.id ?>-error"> <br/> </small>
+</div>

@@ -1,0 +1,55 @@
+<script>
+  $(document).ready(function() {
+    //
+  })
+  
+  function createDescOfRow(row, headers) {
+    var desc = ""
+    for (var headersIdx = 0; headersIdx < headers.length; headersIdx++) {
+      if (headersIdx === 1) desc += " ("
+      else if (headersIdx > 1) desc += ", "
+      desc += row[headers[headersIdx]]
+    }
+    if (headers.length > 1) desc += ")"
+    return desc
+  }
+  
+  function loadPrimary() {
+    var headers = JSON.parse(<?= JSON.stringify(PRIMARY_COLUMN) ?>)
+    if (typeof headers === 'string') headers = [headers]
+    google.script.run
+      .withSuccessHandler(function(rows) {
+        var list = $("#primary-list")
+        list.empty()
+        for (var rowsIdx = 0; rowsIdx < rows.length; rowsIdx++) {
+          var desc = createDescOfRow(rows[rowsIdx], headers)
+          
+          var item =
+            $("<a></a>")
+              .attr("onclick", "goToPage('result', " + rowsIdx + ")")
+              .html(
+                $("<div class=\"collection-item\"></div>")
+                  .html(desc)
+              )
+          list.append(item)
+        }
+      })
+      .getListOf(headers)
+  }
+  
+  function loadDataById(id) {
+    google.script.run
+      .withSuccessHandler(function(rowJSON) {
+        var row = JSON.parse(rowJSON)
+        for (var prop in row) {
+          var propId = null 
+          <? for (var name in fieldNameToId) { ?>
+            if (prop === <?= name ?>)
+              propId = <?= fieldNameToId[name] ?> 
+          <? } ?>
+          $("." + propId + "-content").html(row[prop])
+        }
+      })
+      .getJSONRowById(id)
+  }
+</script>

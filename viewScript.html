@@ -1,0 +1,16 @@
+<script>
+  $(document).ready(function() {
+    //
+  })
+  
+  function goToPage(page, data) {
+    $(".card").html("Loading...")
+    google.script.run
+      .withSuccessHandler(function(docPage) {
+        document.open()
+        document.write(docPage)
+        document.close()
+      })
+      .getPage(page, data)
+  }
+</script>

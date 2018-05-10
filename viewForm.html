@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('viewStylesheet') ?>
+  </head>
+  <body>
+  <main>
+    <div class="container">
+      <h1 class="mb5 dib"> <?= APPS_NAME ?> </h1>
+      <p class="dib mx5">
+        <a onclick="goToPage('result')">
+          view result <i class="fas fa-share-square"></i>
+        </a>
+      </p>
+      <form>
+      
+      <? for (var sectionIdx = 0; sectionIdx < SCHEMA.sections.length; sectionIdx++) {
+        var section = SCHEMA.sections[sectionIdx] ?>
+        <div class="card<? if (sectionIdx !== 0) { ?> hidden<? } ?>" id="section-<?= sectionIdx ?>">
+          <div class="card-title">
+            <h3> <?= section.sectionName ?> </h3>
+          </div>
+          <div class="card-content">
+            
+            <? for (var fieldIdx = 0; fieldIdx < section.fields.length; fieldIdx++) {
+              var field = section.fields[fieldIdx] ?>
+              
+              <? if (field.type === 'createTimestamp') { 
+              
+                /* nothing will be shown */
+                
+              } else if (field.type === 'text') { ?> <?!= include('viewFormFieldText', { field: field }) ?>
+                
+              <? } else if (field.type === 'autocomplete') { ?> <?!= include('viewFormFieldAutocomplete', { field: field }) ?>
+                
+              <? } else if (field.type === 'number') { ?> <?!= include('viewFormFieldNumber', { field: field }) ?>
+                
+              <? } else if (field.type === 'email') { ?> <?!= include('viewFormFieldEmail', { field: field }) ?>
+                
+              <? } else if (field.type === 'date') { ?> <?!= include('viewFormFieldDate', { field: field }) ?>
+                
+              <? } else if (field.type === 'radio') { ?> <?!= include('viewFormFieldRadio', { field: field }) ?>
+                
+              <? } else if (field.type === 'checkbox') { ?> <?!= include('viewFormFieldCheckbox', { field: field }) ?>
+                
+              <? } else if (field.type === 'paragraph') { ?>
+              
+                <? if (typeof field.title !== 'undefined') { ?> <h4> <?= field.title ?> </h4> <? } ?>
+                <p> <?!= field.text ?> </p>
+                
+              <? } else { 
+              
+                throw 'undefined field type'
+
+              } ?>
+              
+            <? } ?>
+            
+          </div>
+          <div class="card-action">
+            <? if (sectionIdx > 0) { ?> <button type="button" onclick="prevSection(<?= sectionIdx-1 ?>)"> Previous <i class="fas fa-arrow-left"></i> </button> <? } ?>
+            <? if (sectionIdx < SCHEMA.sections.length - 1) { ?> <button type="button" onclick="nextSection(<?= sectionIdx+1 ?>)"> Next <i class="fas fa-arrow-right"></i> </button> <? } ?>
+            <? if (sectionIdx === SCHEMA.sections.length - 1) { ?> 
+              <button type="button" onclick="processForm()"> Submit <i class="fas fa-paper-plane"></i> </button> <br/>
+              <small id="loading"> Submitting ... <br/> </small>
+              <small class="error" id="general-error">  </small>
+            <? } ?>
+          </div>
+        </div>
+      <? } ?>
+      
+      <div class="card hidden" id="section-success">
+        <div class="card-title">
+          <h3> Success </h3>
+        </div>
+        <div class="card-content">
+          <p> Your response has been sent. </p>
+        </div>
+      </div>
+      
+      </form>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      &copy; 2018. Presented with <a href="https://github.com/yonasadiel/ladon">Ladon</a>.
+    </div>
+  </footer>
+  </body>
+  <?!= include('viewScript') ?>
+  <?!= include('viewFormScript') ?>
+</html>

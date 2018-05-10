@@ -1,0 +1,248 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/default.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/themes/default.date.css">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pickadate.js/3.5.6/compressed/picker.date.js"></script>
+  
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*:focus { outline: none; }
+
+html, body {
+  background-color: <?= COLOR_PRIMARY ?>;
+  
+  font-family: 'Open Sans';
+  font-size: 14px;
+  
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  margin: 10px auto 0 auto;
+  padding: 0 15px;
+  max-width: 650px;
+}
+
+.mt5 { margin-top: 5px }
+.mb5 { margin-bottom: 5px }
+.mx5 { margin-left: 5px; margin-right: 5px }
+.my5 { margin-top: 5px; margin-bottom: 5px }
+
+.db  { display: block; }
+.di  { display: inline; }
+.dib { display: inline-block; }
+
+h1 { font-size: 40px; }
+h2 { font-size: 35px; }
+h3 { font-size: 30px; }
+h4 { font-size: 25px; }
+h5 { font-size: 20px; }
+h6 { font-size: 15px; }
+
+i { margin: 0 5px; }
+h1, h2, h3, h4, h5, h6, p { margin: 0 0 .5em 0; }
+
+a, a:visited, a:hover, a:focus {
+  cursor: pointer;
+  border: 0;
+  text-decoration: underline;
+  color: <?= COLOR_ACCENT ?>;
+}
+
+<? /** CARD *************************************************************************/ ?>
+
+.card {
+  position: relative;
+  background-color: #fbfcfe;
+  
+  width: -webkit-fill-available;
+  margin-bottom: 30px;
+  padding: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-top: 5px solid;
+  border-top-color: <?= COLOR_ACCENT ?>
+}
+
+.card-title {
+  margin-bottom: 15px;
+}
+
+.card-content {
+
+}
+
+.card-action {
+  margin-top: 15px;
+}
+
+.card.hidden {
+  display: none;
+}
+
+<? /** BUTTON ***********************************************************************/ ?>
+
+button {
+  background-color: <?= COLOR_PRIMARY ?>;
+  font-size: 1.2rem;
+  
+  margin: 0 5px;
+  padding: 10px 15px;
+  border: 0px;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  
+  cursor: pointer;
+}
+
+button:hover, button:focus {
+  background-color: <?= COLOR_PRIMARY_DARK ?>;
+  
+  transition: .2s;
+  transition-timing-function: ease;
+}
+
+<? /** INPUT FIELD ******************************************************************/ ?>
+
+label {
+  display: block;
+  font-size: .8em;
+}
+
+input {
+  display: block;
+
+  background-color: transparent;
+  font-size: 1.2em;
+  
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px 0;
+  border: 0px;
+  border-bottom: 1px solid;
+  border-bottom-color: #aaa;
+}
+
+input[type=radio], input[type=checkbox] {
+  display: inline-block;
+  -webkit-appearance: unset;
+  -moz-appearance: unset;
+  appearance: unset;
+  
+  background-color: transparent;
+  
+  height: 1.25em;
+  width: 1.25em;
+  margin: .25em .25em .25em 0;
+  border: 2px solid <?= COLOR_PRIMARY_DARK ?>;
+  padding: 0;
+}
+
+input[type=radio]:focus, input[type=checkbox]:focus {
+  border: 2px solid <?= COLOR_ACCENT ?>;
+}
+
+input[type=radio] {
+  transition: background .5s ease, border-color .5s ease;
+  border-radius: 1.5em;
+}
+
+input[type=radio]:checked {
+  transition: background .5s ease, border-color .5s ease;
+  background: radial-gradient(<?= COLOR_ACCENT ?> 40%, transparent 41%);
+  border-color: <?= COLOR_ACCENT ?>;
+}
+
+input[type=checkbox] {
+  transition: clip-path .5s ease, background-color .5s ease;
+  clip-path: polygon(0% 0%, 50% 0%, 100% 0%, 100% 50%, 100% 100%, 50% 100%, 0% 100%, 0% 50%);
+}
+
+input[type=checkbox]:checked {
+  background-color: <?= COLOR_ACCENT ?>;
+  clip-path: polygon(25% 40%, 40% 60%, 80% 20%, 90% 40%, 60% 60%, 40% 80%, 25% 65%, 10% 50%);
+  transition: clip-path .5s ease, background-color .5s ease;
+}
+
+.radio-label, .checkbox-label {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+label.radio-item, label.checkbox-item {
+  margin: .8em 0;
+  display: table;
+  font-size: inherit;
+  
+  cursor: pointer;
+}
+
+.picker__select--month, .picker__select--year {
+  height: unset;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+small {
+  opacity: .5;
+}
+
+small.error {
+  opacity: 1;
+  color: red;
+}
+
+.input {
+  margin: 2em 0;
+}
+
+<? /** COLLECTION *******************************************************************/ ?>
+
+.collection {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.collection .collection-item {
+  padding: 1em;
+  border: 1px solid #aaa;
+  border-top: 0;
+}
+
+.collection .collection-item:hover {
+  background-color: <?= COLOR_PRIMARY ?>
+}
+
+.collection *:first-child .collection-item,
+.collection > .collection-item:first-child {
+  border-top: 1px solid #aaa;
+}
+
+.collection a {
+  text-decoration: none;
+  color: black;
+}
+
+<? /** FOOTER ***********************************************************************/ ?>
+
+main {
+  min-height: calc(100% - 50px - 3em);
+  margin-bottom: 50px;
+}
+
+footer {
+  background-color: <?= COLOR_PRIMARY_DARK ?>;
+  
+  height: 3em;
+  border: 0;
+  border-top: 5px solid <?= COLOR_ACCENT ?>;
+  box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+</style>

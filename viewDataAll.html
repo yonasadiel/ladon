@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('viewStylesheet') ?>
+  </head>
+  <body>
+  <main>
+    <div class="container">
+      <h1 class="mb5 dib"> <?= APPS_NAME ?> </h1>
+      <p class="dib mx5">
+        <a onclick="goToPage('form')">
+          send a response <i class="fas fa-share-square"></i>
+        </a>
+      </p>
+      <div class="card">
+        <div class="card-title">
+          <h3> Response List </h3>
+          <p> Click on the name to see the details. </p>
+        </div>
+        <div class="card-content">
+          
+          <div id="primary-list" class="collection">
+            <a onclick="">
+              <div class="collection-item"> Fetching data ... </div>
+            </a>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="container">
+      &copy; 2018. Presented with <a href="https://github.com/yonasadiel/ladon">Ladon</a>.
+    </div>
+  </footer>
+  </body>
+  <?!= include('viewScript') ?>
+  <?!= include('viewDataScript') ?>
+  <script>
+    loadPrimary()
+  </script>
+</html>
+
+

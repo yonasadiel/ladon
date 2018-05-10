@@ -1,0 +1,19 @@
+<div class="input">
+  <? if (typeof data.field.name !== 'undefined') { ?> <label> <?= data.field.name ?> </label> <? } ?>
+   <input
+    id="<?= data.field.id ?>"
+    name="<?= data.field.id ?>"
+    list="<?= data.field.id ?>-list"
+    type="text"
+    autocomplete="off"
+    onchange='validate(<?= JSON.stringify(data.field) ?>, this)'
+    <? if (typeof data.field.placeholder !== 'undefined') { ?> placeholder="<?= data.field.placeholder ?>" <? } ?>
+  >
+  <datalist id="<?= data.field.id ?>-list">
+    <? for (var optionIdx = 0; optionIdx < data.field.options.length; optionIdx++) { ?>
+      <option value="<?= data.field.options[optionIdx] ?>">
+    <? } ?>
+  </datalist>
+  <? if (typeof data.field.helper !== 'undefined') { ?> <small> <?= data.field.helper ?> </small> <? } ?>
+  <small class="error" id="<?= data.field.id ?>-error"> <br/> </small>
+</div>
